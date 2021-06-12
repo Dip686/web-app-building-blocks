@@ -5,6 +5,7 @@ const path =  require('path');
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const User =  require('./model/user');
+const jwt = require('jsonwebtoken');
 const configObj = require('./config/config');
 try {
   mongoose.connect(configObj.CONNECTION_URL, {
@@ -45,6 +46,44 @@ app.post('/api/register', async (req, res) => {
     else {
       console.log(error);
     }
+  }
+});
+
+app.post('/api/login', async (req, res) => {
+  const { username, password:plainTextPassword} = req.body;
+  // validate the username is present
+  // lean returns a simple JSON
+  const userObj = await User.findOne({username}).lean();
+  if(!userObj) res.json({status: 'error', message: 'Invalid username/password'});
+
+  // JWT token is used as a validator of the current user session that a genuine user is accessing
+  if (await bcrypt.compare(plainTextPassword, userObj.password)){
+    const token = jwt.sign({
+      id: userObj._id,
+      username: userObj.username
+    }, configObj.JWT_SECRET);
+
+    res.json({status: 'success', message: 'Login successful', token});
+  } else {
+    res.json({status: 'error', message: 'Invalid username/password'});
+  }
+});
+
+app.post('/api/change-password', async (req, res) => {
+  const { token, newPassword:plainTextNewPassword } = req.body;
+  if(!plainTextNewPassword ||  typeof plainTextNewPassword !== 'string') res.json({status: 'error', message: 'Please provide password as a string'});
+  try{
+    const user = jwt.verify(token, configObj.JWT_SECRET);
+    const _id = user.id;
+    const hashedPassword = await bcrypt.hash(plainTextNewPassword, 10);
+    await User.updateOne(
+      { _id },
+      {
+        $set: {password: hashedPassword}
+      });
+    res.json({status: 'success', message: 'password updated successfully'});
+  }catch(error){
+    res.json({status: 'error', message: ';))'});
   }
 });
 
