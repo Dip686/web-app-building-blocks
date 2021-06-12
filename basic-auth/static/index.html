@@ -23,7 +23,7 @@
       let username =  document.getElementById('username').value;
       let password = document.getElementById('password').value;
       try {
-        const response = await fetch('api/register', {
+        const response = await fetch('/api/register', {
           method: 'POST',
           headers: {
             'Content-type': 'application/json'
@@ -33,6 +33,13 @@
             password
           })
         }).then((res) => res.json());
+
+        if (response.status ==='success') {
+          console.log('user created successfully');
+        }
+        if (response.status === 'error') {
+          console.log(response.message);
+        }
       }catch (error) {
         console.log(error);
       }

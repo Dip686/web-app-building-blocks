@@ -2,7 +2,7 @@
 # Basic Auth Generator:
 This package contains code required to create basic sign-up and sign-in mechanism.
 
-> **Note** Learn about building basic auth functioanlity from [here]('https://www.youtube.com/watch?v=b91XgdyX-SM&ab_channel=codedamn')
+> **Note** Learn about building basic auth functionality from [here](https://www.youtube.com/watch?v=b91XgdyX-SM&ab_channel=codedamn).
 
 How to use:
 - You must have set up a mongoDB cluster.
