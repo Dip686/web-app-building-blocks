@@ -1,2 +1,3 @@
 # web-app-building-blocks
-Targets to resolve complexity in developing any web-app. It contains individual packages with key functionality being addressed alone. This should be reusable and loosely coupled. Also going through the packages will help the reader understand what all key behaviour they must consider to build the feature.
+
+Created with the AIM of making web app building easier and helping anyone to learn how to build a particular feature that could be anything or everything associated with building a website. It contains packages with these features being implemented in isolation. These are reusable and loosely coupled. That means each package contains only a particular feature or related features implemented.
